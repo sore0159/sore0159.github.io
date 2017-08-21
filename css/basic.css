@@ -32,12 +32,18 @@ div {
         margin-left: -75px;
         margin-right: -10px;
         margin-bottom: 15px;
+
+        margin-top: 5px;
+        margin-left: -60px;
+        margin-right: 5px;
+
         padding-left: 30px;
         padding-top: 15px;
         padding-bottom: 10px;
 
-        border: 0px solid #000;
-        border-width: 0 0 2px 0;
+        border: 2px solid #000;
+        xborder-width: 0 0 2px 0;
+        border-radius: 5px;
 
         font-family: "Courier New", Courier, Monospace;
         font-size: xx-large;
@@ -45,8 +51,8 @@ div {
 }
 #topright {
         position: absolute;
-        top: 7px;
-        right: 0;
+        top: 12px;
+        right: 15px;
         
         padding-right: 10px;
         margin-top:15px;
