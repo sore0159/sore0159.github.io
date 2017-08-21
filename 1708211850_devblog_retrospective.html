@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Eric Sorell Writes Code: (DEVBLOG RETROSPECTIVE)</title>
+<link rel="stylesheet" href="/css/basic.css">
+<link rel="shortcut icon" href="/img/yd32.ico">
+</head>
+<body>
+<div id="titlebar">
+<a id="titlelink" href="/">Eric Sorell Writes Code</a>
+</div>
+<div id="topright">
+        <a class="toplink" href="/index.html">HOME</a>
+        <a class="toplink" href="/about.html">ABOUT ME</a> 
+        <a class="toplink" href="/archives.html">ARCHIVES</a>
+ </div>
+<div id=bodyholder>
+
+
+<h1><a class=posttitle href="1708211850_devblog_retrospective.html">DEVBLOG RETROSPECTIVE</a></h1> 
+
+<div id="postheader">
+<p class="date">Published Aug 21, 2017 (18:50)</p>
+<p class="mytags">Tagged: <a class="taglink" href="/archives_devblog.html">devblog</a> <a class="taglink" href="/archives_go.html">go</a> <a class="taglink" href="/archives_retrospective.html">retrospective</a> </p>
+
+<div class="topnav">
+<b>Go to:</b> 
+
+<span class="inv">&lt;&lt;First</span>
+
+&bull;
+
+<span class="inv">&lt;Previous</span>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+</div>
+<h3>A quick aside</h3>
+
+<p>Since this is the first post to <a href=".">Eric Sorell Writes Code</a>: if you want to know more about this site visit <a href="index.html">the main page</a>, or if you want to know about me in particular visit <a href="about.html">the page about me</a>.</p>
+
+<p>This post is a little more high-level than most project posts I anticipate due to the time between working on the project and actually blogging about that work.  Now that the blog exists, future projects can be documented while in-progress.</p>
+
+<p>I&rsquo;m also uncertain about the basic structure of these posts; if I want a conversational tone, a detailed examination or a high leveled overview, and other concerns.  Things need to be shaken out for a bit before they settle into a solid style.</p>
+
+<h3>What is the DevBlog project?</h3>
+
+<p>My <a href="https://github.com/sore0159/devblog">DevBlog</a> project was started because I wanted an actual product for my own use: a tool to manage a simple set of markdown files into an organized and formatted web site.  I like writing in vim on the console, and markdown has proven to have everything I want.</p>
+
+<p>Previously I have simply copy/pasted my journals into Google+ to put them online.  The goals with this project were to have journals be easier to navigate and to be formatted in a manner more suiting my personal aesthetic.</p>
+
+<p>Beyond product usability, further design goals of the project were:</p>
+
+<ul>
+<li>Don&rsquo;t take forever.</li>
+<li>Keep the code presentable and compilable by others.</li>
+</ul>
+
+<h3>How did the project go?</h3>
+
+<p>The first design was for a site that statically generated most page content, but dynamically created the navigation and page-design elements based on user input.  The idea here was to allow for users to filter or search for posts.  I went through a few different approaches to the overall structure of the project at this point, deciding how to divide parsing responsibilities.</p>
+
+<p>After a bit of a break from the project, I came back to it with the decision to create an entirely static site generator.  Conversations with friends about the cost/benefit ratio of semi-dynamic parsing made me reconsider my previous approach, and after investigating github&rsquo;s static site hosting I was convinced.</p>
+
+<p>This means the project ended up being significantly simpler than my initial estimation.  Mainly, I no longer needed to have my server manage an index that it would use to serve content.  The question of how to handle navigation was solved by a quick-and-dirty approach of including multiple navigation links on each post, one for every tag a post has.  This creates a bit of clutter, but can be fixed with javascript down the line if feedback indicates it is a problem.</p>
+
+<p>Several tweaks to the options and configuration of the program were made after attempted use.  Initially I had hoped for a single binary that could be used in any directory without need for outside resources, but recompilation on every change ended up being a hassle.  Additionally, there turned out to be no need for portability: in reality I am keeping all my blog posts and associated resources in one main directory anyway.</p>
+
+<h3>Concluding thoughts</h3>
+
+<p>I feel like the design considerations regarding index structuring and semi-dynamic routing were the most interesting aspects of this project, and with their abandonment I don&rsquo;t have much to talk about here.  I have made a program that just reads in some files, templates the contents, and then outputs formatted files.  It&rsquo;s pretty simple!</p>
+
+<p>This project finally convinced me to create a github based gopath in my local file system, so my code should <em>just run</em> when downloaded by someone else.  I don&rsquo;t expect anyone else to actually use this program, but I want this and all projects going forward to be portfolio pieces.  Having an examiner be able to compile and run my programs themself seems a valuable thing.</p>
+
+<p>I have not really commented my code, or attempted to structure the files/packages for display purposes.  Part of this is the simplicity and small scale of the project: everything pretty much just does what it says.  Similarly there are no tests, since there are no real invariants I have to maintain through future upgrades.</p>
+
+<p>From a product standpoint, I think my little dv command is much more suited to my tastes than any premade content platform I&rsquo;ve seen so far.  The site design needs work, and I expect to continue to expand functionality of the generator as I use it going forward.</p>
+
+
+<hr class=navbar />
+<div id="navbar">
+
+<div class="navbar">
+
+
+<span class="inv">&lt;&lt;First</span>
+
+&bull;
+
+<span class="inv">&lt;Previous</span>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+<div class="navbar">
+
+
+<span class="inv">&lt;&lt;First</span>
+
+&bull;
+
+<span class="inv">&lt;Previous</span>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_devblog.html">Posts tagged "devblog"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+<div class="navbar">
+
+
+<span class="inv">&lt;&lt;First</span>
+
+&bull;
+
+<span class="inv">&lt;Previous</span>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_go.html">Posts tagged "go"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+<div class="navbar">
+
+
+<span class="inv">&lt;&lt;First</span>
+
+&bull;
+
+<span class="inv">&lt;Previous</span>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_retrospective.html">Posts tagged "retrospective"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+</div>
+
+</div>
+</body>
+</html>
