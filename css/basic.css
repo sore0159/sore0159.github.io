@@ -1,10 +1,9 @@
 body {
         padding: 0px;
         margin: 0px;
-        padding-left: 75px;
-        padding-right: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
         padding-bottom: 200px;
-        min-width:700px;
 
         color: #000;
         background-color: #ddd;
@@ -15,35 +14,25 @@ div {
 }
 #bodyholder {
         max-width: 850px;
-        margin-left: -50px;
-        margin-right: 15px;
         padding: 10px;
         padding-left: 50px;
         padding-right: 50px;
         padding-bottom: 15px;
 
-        border: 2px solid #000;
-        border-radius: 10px;
+        border: 1px solid #888;
 
         background-color: #fff;
 }
 
 #titlebar {
-        margin-left: -75px;
-        margin-right: -10px;
         margin-bottom: 15px;
-
-        margin-top: 5px;
-        margin-left: -60px;
-        margin-right: 5px;
+        margin-top: 10px;
 
         padding-left: 30px;
         padding-top: 15px;
         padding-bottom: 10px;
 
-        border: 2px solid #000;
-        xborder-width: 0 0 2px 0;
-        border-radius: 5px;
+        border: 1px solid #888;
 
         font-family: "Courier New", Courier, Monospace;
         font-size: xx-large;
@@ -51,7 +40,7 @@ div {
 }
 #topright {
         position: absolute;
-        top: 12px;
+        top: 15px;
         right: 15px;
         
         padding-right: 10px;
@@ -70,6 +59,7 @@ a {
         font-weight: normal;
 }
 a.posttitle {
+        color: #000;
         text-decoration: none;
 }
 a.postlink {
@@ -103,13 +93,12 @@ h1, h2, h3 {
         margin-left: -50px;
         margin-right: -50px;
 
-        border: 0px solid #000;
-        border-width: 2px 0;
+        border: 0px solid #888;
+        border-width: 1px 0;
 
         font-family: "Courier New", Courier, Monospace;
-        color: #a00;
         color: #000;
-        background-color: #aaf;
+        background-color: #bbf;
 }
 h1 {
         font-size: x-large;
@@ -117,7 +106,7 @@ h1 {
 hr {
         margin-left: -50px;
         margin-right: -50px;
-        border: 1px solid #004;
+        border: 1px solid #888;
 }
 p {
         max-width: 900px;
