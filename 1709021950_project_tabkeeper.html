@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Eric Sorell Writes Code: (PROJECT TABKEEPER)</title>
+<link rel="stylesheet" href="/css/basic.css">
+<link rel="shortcut icon" href="/img/yd32.ico">
+</head>
+<body>
+<div id="titlebar">
+<a id="titlelink" href="/">Eric Sorell Writes Code</a>
+</div>
+<div id="topright">
+        <a class="toplink" href="/index.html">HOME</a>
+        <a class="toplink" href="/about.html">ABOUT ME</a> 
+        <a class="toplink" href="/archives.html">ARCHIVES</a>
+ </div>
+<div id=bodyholder>
+
+
+<h1><a class=posttitle href="1709021950_project_tabkeeper.html">PROJECT TABKEEPER</a></h1> 
+
+<div id="postheader">
+<p class="date">Published Sep 2, 2017 (19:50)</p>
+<p class="mytags">Tagged: <a class="taglink" href="/archives_design_outline.html">design outline</a> <a class="taglink" href="/archives_go.html">go</a> <a class="taglink" href="/archives_project_tabkeeper.html">project tabkeeper</a> </p>
+
+<div class="topnav">
+<b>Go to:</b> 
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+</div>
+<p>Starting up a small project: <a href="https://github.com/sore0159/tabkeeper">tabkeeper</a>.  My wife and I have a constant running tab that we use to manage our house finances: when either of us pay for a &lsquo;house bill&rsquo;, we mark down what the other owes on the tab.  Right now we use a Google Doc spreadsheet to do this, but this is inconvenient in some small ways.  Hence, I am creating a small app for our home server to take the place of the spreadsheet.</p>
+
+<p>The main design goal of this app will be an improved user interface: streamlined data entry and automated data processing (date marking tab entries, adding up the tab).  After basic functionality is in place, I can add extended functionality like sorting/filtering and customizable recurring entries.</p>
+
+<p>As this will be a web page we use through our browsers, security is a concern.  I will attempt to limit access to only our home computers through both settings on the home server&rsquo;s reverse proxy (apache2) and in the design of the app itself.  Since we are not hosting any actual financial information and ease of use is a priority, users will not be involved in any authentication steps such as passwords.</p>
+
+<p>Another primary concern is data persistence.  For more advanced apps, a database is a natural choice and nothing about this app has any complications that would require more than a simple SQL table and a few SELECT/INSERT statements.  However, at least at this stage of the project, using a database seems like overkill.  I will be starting the project using a single file that the app will read/write it&rsquo;s data to.</p>
+
+<p>Using a single file for data persistence does present some challenges: safety from concurrent read/write access, and data parsing.  Since the data has fairly simple structure &ndash; a list of (time, description, amount) &ndash; I will be using go&rsquo;s easy to use JSON parsing libraries.  Storing the data in JSON keeps it readable by humans should something go wrong, and means I don&rsquo;t have to write a comma/space parser myself.</p>
+
+<p>Concurrency issues around file access I have less experience with: this is one of the big strengths of a database and a good reason to investigate small scale databases like SQLite or boltdb if the project expands beyond it&rsquo;s present small scale.  Right now I hope to get some useful experience out of experimenting with a mutex-lock system of file access control.</p>
+
+
+<hr class=navbar />
+<div id="navbar">
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+<div class="navbar">
+
+
+<span class="inv">&lt;&lt;First</span>
+
+&bull;
+
+<span class="inv">&lt;Previous</span>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_design_outline.html">Posts tagged "design outline"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_go.html">Posts tagged "go"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+<div class="navbar">
+
+
+<span class="inv">&lt;&lt;First</span>
+
+&bull;
+
+<span class="inv">&lt;Previous</span>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_project_tabkeeper.html">Posts tagged "project tabkeeper"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+</div>
+
+</div>
+</body>
+</html>
