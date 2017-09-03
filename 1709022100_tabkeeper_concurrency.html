@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Eric Sorell Writes Code: (TABKEEPER CONCURRENCY)</title>
+<link rel="stylesheet" href="/css/basic.css">
+<link rel="shortcut icon" href="/img/yd32.ico">
+</head>
+<body>
+<div id="titlebar">
+<a id="titlelink" href="/">Eric Sorell Writes Code</a>
+</div>
+<div id="topright">
+        <a class="toplink" href="/index.html">HOME</a>
+        <a class="toplink" href="/about.html">ABOUT ME</a> 
+        <a class="toplink" href="/archives.html">ARCHIVES</a>
+ </div>
+<div id=bodyholder>
+
+
+<h1><a class=posttitle href="1709022100_tabkeeper_concurrency.html">TABKEEPER CONCURRENCY</a></h1> 
+
+<div id="postheader">
+<p class="date">Published Sep 2, 2017 (21:00)</p>
+<p class="mytags">Tagged: <a class="taglink" href="/archives_design.html">design</a> <a class="taglink" href="/archives_go.html">go</a> <a class="taglink" href="/archives_project_tabkeeper.html">project tabkeeper</a> </p>
+
+<div class="topnav">
+<b>Go to:</b> 
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709021950_project_tabkeeper.html" title="PROJECT TABKEEPER (Sep 2, 2017 (19:50))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">Next&gt;</a>
+
+&bull;
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">Latest&gt;&gt;</a>
+
+
+</div>
+
+</div>
+<p>First design issue: concurrent file access control.</p>
+
+<p>Pass 1 was a wrapper struct around an *os.File that used a sync.RWMutex to control Read and Write calls.  This failed when I realized that after reading from the file, the next pageload would not start over at the beginning.  I looked at adjusting the ReadAt mark or using Seek to move the cursor, but this got complicated when considering that I did <em>not</em> want to adjust Write calls.</p>
+
+<p>Questions this raised:</p>
+
+<ul>
+<li>Is it a bad idea for a long-running server to hold an open file for an extended time?</li>
+<li>How does the system handle multiple simultaneous &ldquo;file&rdquo; objects on the same filesystem object?</li>
+</ul>
+
+<p>Pass 2 was a separate manager in charge of opening/closing file objects for every request, guarded again my a sync.RWMutex.  I miss rust&rsquo;s guard syntax for this kind of problem.  Pass 2A looked like:</p>
+
+<pre><code class="language-go">func (m *SafeManager) GetR() (*os.File, err) { 
+     m.Guard.RLock()
+     return os.Open(m.FileName)
+}
+func (m *SafeManager) DoneR(f *os.File) {
+     f.Close()
+     m.RUnlock()
+}
+
+func Example() {
+     f, err := m.GetR()
+     if err != nil { ... }
+     defer m.DoneR(f)
+     ...
+}
+</code></pre>
+
+<p>But I ended up with my current Pass 2B system, of having a wrapper around *os.File <em>and</em> a manager: calls to the manager wait on the mutex, then open and wrap a *os.File in a SafeFile, which wraps the Close() method to also unlock the appropriate guard in the manager.  This means when you use a SafeFile you don&rsquo;t need to worry about how it&rsquo;s safety is implemented beyond normal File closing.</p>
+
+<p>Not sure what to do if there is an error on the file close call: I just ignore these for now.</p>
+
+<p>So, the current system can safely read/write to a file based on web calls.  Next up, creating a data structure to represent tab entries, and implementing JSON parsing for read/writes.  I have some concern about processing needed once the list gets long, but at present I believe having a yearly file rotation will keep things fine.</p>
+
+
+<hr class=navbar />
+<div id="navbar">
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709021950_project_tabkeeper.html" title="PROJECT TABKEEPER (Sep 2, 2017 (19:50))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">Next&gt;</a>
+
+&bull;
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">Latest&gt;&gt;</a>
+
+
+</div>
+
+<div class="navbar">
+
+
+<span class="inv">&lt;&lt;First</span>
+
+&bull;
+
+<span class="inv">&lt;Previous</span>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_design.html">Posts tagged "design"</a>
+
+        &bull;
+</div>
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">Next&gt;</a>
+
+&bull;
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">Latest&gt;&gt;</a>
+
+
+</div>
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709021950_project_tabkeeper.html" title="PROJECT TABKEEPER (Sep 2, 2017 (19:50))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_go.html">Posts tagged "go"</a>
+
+        &bull;
+</div>
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">Next&gt;</a>
+
+&bull;
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">Latest&gt;&gt;</a>
+
+
+</div>
+
+<div class="navbar">
+
+
+<a class="navbar" href="1709021950_project_tabkeeper.html" title="PROJECT TABKEEPER (Sep 2, 2017 (19:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709021950_project_tabkeeper.html" title="PROJECT TABKEEPER (Sep 2, 2017 (19:50))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_project_tabkeeper.html">Posts tagged "project tabkeeper"</a>
+
+        &bull;
+</div>
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">Next&gt;</a>
+
+&bull;
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">Latest&gt;&gt;</a>
+
+
+</div>
+
+
+</div>
+
+</div>
+</body>
+</html>

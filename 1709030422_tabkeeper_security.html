@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Eric Sorell Writes Code: (TABKEEPER SECURITY)</title>
+<link rel="stylesheet" href="/css/basic.css">
+<link rel="shortcut icon" href="/img/yd32.ico">
+</head>
+<body>
+<div id="titlebar">
+<a id="titlelink" href="/">Eric Sorell Writes Code</a>
+</div>
+<div id="topright">
+        <a class="toplink" href="/index.html">HOME</a>
+        <a class="toplink" href="/about.html">ABOUT ME</a> 
+        <a class="toplink" href="/archives.html">ARCHIVES</a>
+ </div>
+<div id=bodyholder>
+
+
+<h1><a class=posttitle href="1709030422_tabkeeper_security.html">TABKEEPER SECURITY</a></h1> 
+
+<div id="postheader">
+<p class="date">Published Sep 3, 2017 (04:22)</p>
+<p class="mytags">Tagged: <a class="taglink" href="/archives_design.html">design</a> <a class="taglink" href="/archives_go.html">go</a> <a class="taglink" href="/archives_project_tabkeeper.html">project tabkeeper</a> </p>
+
+<div class="topnav">
+<b>Go to:</b> 
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709022100_tabkeeper_concurrency.html" title="TABKEEPER CONCURRENCY (Sep 2, 2017 (21:00))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+</div>
+<p>It turns out the specific needs of my app were not suited to the more abstract concurrency guards I had built around my files.  Safe read and safe write methods are nice, but my only two interactions are really &ldquo;read all&rdquo; or &ldquo;add this item to whatever you already have&rdquo;.  So I overhauled the concurrency guards to just specifically handle those two operations and abandoned the file-level wrappers.</p>
+
+<p>With regards to security, my first pass of cut&amp;paste IP checking failed, because when I worked on it before I never ran from localhost.  It&rsquo;s not really a great solution anyway so I shelved it for now, but I need to figure out something before this is done.</p>
+
+<p>Also, I realized logging is a serious concern.  There are several places where things could go wrong with file read/writes, and as this program is meant to run in the background on my server hardware I need to setup a logfile for any potential errors.  Nothing too complicated, but another gear that needs to be fitted into the machine.  For now I&rsquo;m using the golang STD log package, works fine.</p>
+
+<p>Starting to tinker around with the HTML interface for the app, which means working with go&rsquo;s template package.  Another area where I&rsquo;ve heard there are some really nice fancy alternatives, but checking out new tools is the opposite of getting something done.</p>
+
+<p>I&rsquo;m going to have to start thinking about how to implement &ldquo;saved&rdquo; commands: if I want a group of monthly reoccurring changes to be available with a single button click, but also configurable through the app, that means another separate subsystem with its own UI and persistence needs.</p>
+
+
+<hr class=navbar />
+<div id="navbar">
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709022100_tabkeeper_concurrency.html" title="TABKEEPER CONCURRENCY (Sep 2, 2017 (21:00))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+<div class="navbar">
+
+
+<a class="navbar" href="1709022100_tabkeeper_concurrency.html" title="TABKEEPER CONCURRENCY (Sep 2, 2017 (21:00))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709022100_tabkeeper_concurrency.html" title="TABKEEPER CONCURRENCY (Sep 2, 2017 (21:00))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_design.html">Posts tagged "design"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709022100_tabkeeper_concurrency.html" title="TABKEEPER CONCURRENCY (Sep 2, 2017 (21:00))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_go.html">Posts tagged "go"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+<div class="navbar">
+
+
+<a class="navbar" href="1709021950_project_tabkeeper.html" title="PROJECT TABKEEPER (Sep 2, 2017 (19:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709022100_tabkeeper_concurrency.html" title="TABKEEPER CONCURRENCY (Sep 2, 2017 (21:00))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_project_tabkeeper.html">Posts tagged "project tabkeeper"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+</div>
+
+</div>
+</body>
+</html>
