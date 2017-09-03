@@ -6,7 +6,7 @@ body {
         padding-bottom: 200px;
 
         color: #000;
-        background-color: #ddd;
+        background-color: #eee;
         font-family: "Courier New", Courier, Monospace;
 }
 div {
@@ -210,7 +210,6 @@ div.topnav {
                 display: auto;
                 font-size: x-large;
                 text-align: center;
-                padding-top: 2px;
                 position: relative;
                 float:left;
                 display: inline-block;
@@ -218,7 +217,7 @@ div.topnav {
                 background-color: #ddd;
                 border-radius: 15px;
                 width:30px;
-                height:28px;
+                height:30px;
         }
         #morenav2 {
                 float:right;
