@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Eric Sorell Writes Code: (DEVBLOG CONTINUATION)</title>
+<link rel="stylesheet" href="/css/basic.css">
+<link rel="shortcut icon" href="/img/yd32.ico">
+</head>
+<body>
+<div id="titlebar">
+<a id="titlelink" href="/">Eric Sorell Writes Code</a>
+</div>
+<div id="topright">
+        <a class="toplink" href="/index.html">HOME</a>
+        <a class="toplink" href="/about.html">ABOUT ME</a> 
+        <a class="toplink" href="/archives.html">ARCHIVES</a>
+ </div>
+<div id=bodyholder>
+
+
+<h1><a class=posttitle href="1709031642_devblog_continuation.html">DEVBLOG CONTINUATION</a></h1> 
+
+<div id="postheader">
+<p class="date">Published Sep 3, 2017 (16:42)</p>
+<p class="mytags">Tagged: <a class="taglink" href="/archives_design.html">design</a> <a class="taglink" href="/archives_go.html">go</a> <a class="taglink" href="/archives_project_devblog.html">project devblog</a> </p>
+
+<div class="topnav">
+<b>Go to:</b> 
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+</div>
+<p>Continued use of this program has lead to further feature development.  When I&rsquo;m editing a new post, often I want a quick look at the page that I&rsquo;m working on will look, without having to regenerate the entire site.  So I&rsquo;ve added a command to &ldquo;generate just this one page without even needing it to be published, and in a form that can be viewed right now without a web server&rdquo;.</p>
+
+<p>Adding in all the adjustments required for a browser to find the css files locally make me think again on the hard-coded aspects of this program that are specific to me, personally.  While I am not really developing for others to use this program, <em>in principle</em> I do want others to be at least <em>able</em> to run the programs.</p>
+
+<p>So, I&rsquo;ve also adjusted a few settings in the test server and tried to update the README to make resource expectations more explicit.  Things like where the program expects to find template and css resources.  I&rsquo;m keeping defaults in line with my own system for ease of personal use, but trying to allow users to change those settings without editing the source code itself.</p>
+
+<p>Also, I have been messing around with the css in order to make the list of navigation bars a little less clutter at the bottom of the post.  Adding some animation to hide most of the clutter unless hovered over will hopefully not obscure important cues from a visitor.</p>
+
+<p>While implementing this I began adding in page-width based css media queries, since I don&rsquo;t want to have hover-dependant navigation enabled for mobile devices.  I took the opportunity to add a few adjustments to other graphical elements to make them behave better at smaller screen widths, as well.  From visiting my site on my phone, I know that font-size still has some unusual behaviors on mobile that I need to look into, but I&rsquo;m happy that the site is functional and readable.</p>
+
+
+<hr class=navbar />
+<div id="navbar">
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div id="morenav">&#8650;</div>
+<div id="morenav2">&#8650;</div>
+
+<div class="navbar">
+
+
+<a class="navbar" href="1709022100_tabkeeper_concurrency.html" title="TABKEEPER CONCURRENCY (Sep 2, 2017 (21:00))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_design.html">Posts tagged "design"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709030422_tabkeeper_security.html" title="TABKEEPER SECURITY (Sep 3, 2017 (04:22))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_go.html">Posts tagged "go"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_project_devblog.html">Posts tagged "project devblog"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+</div>
+
+</div>
+</body>
+</html>

@@ -20,8 +20,15 @@ div {
         padding-bottom: 15px;
 
         border: 1px solid #888;
+        border-radius: 10px;
 
         background-color: #fff;
+        transition: margin-left 1s;
+}
+@media only screen and (min-width:1100px) {
+        #bodyholder {
+                margin-left: 50px;
+        }
 }
 
 #titlebar {
@@ -33,22 +40,18 @@ div {
         padding-bottom: 10px;
 
         border: 1px solid #888;
+        border-radius: 10px;
 
         font-family: "Courier New", Courier, Monospace;
         font-size: xx-large;
         background-color: #fff;
 }
 #topright {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        
-        padding-right: 10px;
-        margin-top:15px;
-
         text-align: right;
         font-size:x-large;
+        margin-bottom: 10px;
 }
+
 a {
         color: #00d;
         text-decoration: underline;
@@ -74,17 +77,33 @@ a.toplink {
         padding: 3px 3px 0px 3px;
         font-weight: normal;
         margin:0;
-        border: 0px solid #aaf;
+        border: 1px solid #888;
         border-radius: 5px;
         background-color: #fff;
         text-decoration: none;
         padding-top: 2px;
+}
+
+@media only screen and (min-width:850px) {
+        #topright {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                
+                padding-right: 10px;
+                margin-top:15px;
+                border-width: 0px;
+        }
+        a.toplink {
+                border: 0px solid #aaf;
+        }
 }
 a.toplink:hover {
         background-color: #eef;
         border-color:#99f;
         color: #00f;
 }
+
 h1, h2, h3 {
         padding-top: 5px;
         padding-bottom: 2px;
@@ -167,4 +186,41 @@ div.topnav {
 }
 #postheader {
         margin-left:20px;
+}
+#navbar {
+        border: 0 solid #888;
+        xborder-width: 1px 0;
+        background-color: #eee;
+        border-radius: 15px;
+}
+#morenav, #morenav2{
+        display: none;
+}
+@media only screen and (min-width:750px) {
+        #navbar {
+                max-height: 40px;
+                overflow: hidden;
+                transition: max-height 2s;
+        }
+        #navbar:hover {
+                max-height: 500px;
+        }
+        #morenav, #morenav2{
+                margin: 0 10px;
+                display: auto;
+                font-size: x-large;
+                text-align: center;
+                padding-top: 2px;
+                position: relative;
+                float:left;
+                display: inline-block;
+                top: -39px;
+                background-color: #ddd;
+                border-radius: 15px;
+                width:30px;
+                height:28px;
+        }
+        #morenav2 {
+                float:right;
+        }
 }
