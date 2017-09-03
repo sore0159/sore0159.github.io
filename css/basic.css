@@ -66,7 +66,6 @@ a.posttitle {
         text-decoration: none;
 }
 a.postlink {
-        font-weight: bold;
 }
 a.navbar {
         padding: 0;
@@ -189,7 +188,6 @@ div.topnav {
 }
 #navbar {
         border: 0 solid #888;
-        xborder-width: 1px 0;
         background-color: #eee;
         border-radius: 15px;
 }
@@ -207,7 +205,6 @@ div.topnav {
         }
         #morenav, #morenav2{
                 margin: 0 10px;
-                display: auto;
                 font-size: x-large;
                 text-align: center;
                 position: relative;
