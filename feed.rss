@@ -5,9 +5,10 @@
     <link>https://sore0159.github.io</link>
     <description>A simple RSS Feed for my devblog</description>
     <item>
-            <title>TABKEEPER OPERATIONAL</title>
+            <title>tabkeeper operational</title>
             <link>https://sore0159.github.io/1709040514_tabkeeper_operational.html</link>
             <pubDate>Sep 4, 2017 (05:14)</pubDate>
+            <dc:creator><![CDATA[Eric Sorell]]></dc:creator>
             <description>TABKEEPER OPERATIONAL posted on Sep 4, 2017 (05:14).  Tagged: design, go, project tabkeeper, </description>
             <content:encoded><![CDATA[<p>CSS has proved to be the bulk of this project design, as usability is the primary focus of the project.  Besides the normal &ldquo;making the page look good&rdquo; tasks, there was particular difficulty configuring css to highlight checkbox/radio button labels based on the status of their boxes.</p>
 
@@ -21,9 +22,10 @@
 ]]></content:encoded>
     </item>
     <item>
-            <title>DEVBLOG CONTINUATION</title>
+            <title>devblog continuation</title>
             <link>https://sore0159.github.io/1709031642_devblog_continuation.html</link>
             <pubDate>Sep 3, 2017 (16:42)</pubDate>
+            <dc:creator><![CDATA[Eric Sorell]]></dc:creator>
             <description>DEVBLOG CONTINUATION posted on Sep 3, 2017 (16:42).  Tagged: design, go, project devblog, </description>
             <content:encoded><![CDATA[<p>Continued use of this program has lead to further feature development.  When I&rsquo;m editing a new post, often I want a quick look at the page that I&rsquo;m working on will look, without having to regenerate the entire site.  So I&rsquo;ve added a command to &ldquo;generate just this one page without even needing it to be published, and in a form that can be viewed right now without a web server&rdquo;.</p>
 
@@ -37,9 +39,10 @@
 ]]></content:encoded>
     </item>
     <item>
-            <title>TABKEEPER SECURITY</title>
+            <title>tabkeeper security</title>
             <link>https://sore0159.github.io/1709030422_tabkeeper_security.html</link>
             <pubDate>Sep 3, 2017 (04:22)</pubDate>
+            <dc:creator><![CDATA[Eric Sorell]]></dc:creator>
             <description>TABKEEPER SECURITY posted on Sep 3, 2017 (04:22).  Tagged: design, go, project tabkeeper, </description>
             <content:encoded><![CDATA[<p>It turns out the specific needs of my app were not suited to the more abstract concurrency guards I had built around my files.  Safe read and safe write methods are nice, but my only two interactions are really &ldquo;read all&rdquo; or &ldquo;add this item to whatever you already have&rdquo;.  So I overhauled the concurrency guards to just specifically handle those two operations and abandoned the file-level wrappers.</p>
 
@@ -53,9 +56,10 @@
 ]]></content:encoded>
     </item>
     <item>
-            <title>TABKEEPER CONCURRENCY</title>
+            <title>tabkeeper concurrency</title>
             <link>https://sore0159.github.io/1709022100_tabkeeper_concurrency.html</link>
             <pubDate>Sep 2, 2017 (21:00)</pubDate>
+            <dc:creator><![CDATA[Eric Sorell]]></dc:creator>
             <description>TABKEEPER CONCURRENCY posted on Sep 2, 2017 (21:00).  Tagged: design, go, project tabkeeper, </description>
             <content:encoded><![CDATA[<p>First design issue: concurrent file access control.</p>
 
@@ -95,9 +99,10 @@ func Example() {
 ]]></content:encoded>
     </item>
     <item>
-            <title>PROJECT TABKEEPER</title>
+            <title>project tabkeeper</title>
             <link>https://sore0159.github.io/1709021950_project_tabkeeper.html</link>
             <pubDate>Sep 2, 2017 (19:50)</pubDate>
+            <dc:creator><![CDATA[Eric Sorell]]></dc:creator>
             <description>PROJECT TABKEEPER posted on Sep 2, 2017 (19:50).  Tagged: design outline, go, project tabkeeper, </description>
             <content:encoded><![CDATA[<p>Starting up a small project: <a href="https://github.com/sore0159/tabkeeper">tabkeeper</a>.  My wife and I have a constant running tab that we use to manage our house finances: when either of us pay for a &lsquo;house bill&rsquo;, we mark down what the other owes on the tab.  Right now we use a Google Doc spreadsheet to do this, but this is inconvenient in some small ways.  Hence, I am creating a small app for our home server to take the place of the spreadsheet.</p>
 
@@ -113,9 +118,10 @@ func Example() {
 ]]></content:encoded>
     </item>
     <item>
-            <title>DEVBLOG RETROSPECTIVE</title>
+            <title>devblog retrospective</title>
             <link>https://sore0159.github.io/1708211850_devblog_retrospective.html</link>
             <pubDate>Aug 21, 2017 (18:50)</pubDate>
+            <dc:creator><![CDATA[Eric Sorell]]></dc:creator>
             <description>DEVBLOG RETROSPECTIVE posted on Aug 21, 2017 (18:50).  Tagged: go, project devblog, retrospective, </description>
             <content:encoded><![CDATA[<h3>A quick aside</h3>
 
