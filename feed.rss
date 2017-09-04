@@ -1,33 +1,147 @@
 <?xml version="1.0"?>
 <rss version="2.0">
   <channel>
-    <title>Eric Sorell Writes Code (RSS Feed)</title>
+    <title>Eric Sorell Writes Code</title>
     <link>https://sore0159.github.io</link>
     <description>A simple RSS Feed for my devblog</description>
     <item>
             <title>DEVBLOG CONTINUATION</title>
             <link>https://sore0159.github.io/1709031642_devblog_continuation.html</link>
+            <pubDate>Sep 3, 2017 (16:42)</pubDate>
             <description>DEVBLOG CONTINUATION posted on Sep 3, 2017 (16:42).  Tagged: design, go, project devblog, </description>
+            <content:encoded><![CDATA[<p>Continued use of this program has lead to further feature development.  When I&rsquo;m editing a new post, often I want a quick look at the page that I&rsquo;m working on will look, without having to regenerate the entire site.  So I&rsquo;ve added a command to &ldquo;generate just this one page without even needing it to be published, and in a form that can be viewed right now without a web server&rdquo;.</p>
+
+<p>Adding in all the adjustments required for a browser to find the css files locally make me think again on the hard-coded aspects of this program that are specific to me, personally.  While I am not really developing for others to use this program, <em>in principle</em> I do want others to be at least <em>able</em> to run the programs.</p>
+
+<p>So, I&rsquo;ve also adjusted a few settings in the test server and tried to update the README to make resource expectations more explicit.  Things like where the program expects to find template and css resources.  I&rsquo;m keeping defaults in line with my own system for ease of personal use, but trying to allow users to change those settings without editing the source code itself.</p>
+
+<p>Also, I have been messing around with the css in order to make the list of navigation bars a little less clutter at the bottom of the post.  Adding some animation to hide most of the clutter unless hovered over will hopefully not obscure important cues from a visitor.</p>
+
+<p>While implementing this I began adding in page-width based css media queries, since I don&rsquo;t want to have hover-dependant navigation enabled for mobile devices.  I took the opportunity to add a few adjustments to other graphical elements to make them behave better at smaller screen widths, as well.  From visiting my site on my phone, I know that font-size still has some unusual behaviors on mobile that I need to look into, but I&rsquo;m happy that the site is functional and readable.</p>
+]]></content:encoded>
     </item>
     <item>
             <title>TABKEEPER SECURITY</title>
             <link>https://sore0159.github.io/1709030422_tabkeeper_security.html</link>
+            <pubDate>Sep 3, 2017 (04:22)</pubDate>
             <description>TABKEEPER SECURITY posted on Sep 3, 2017 (04:22).  Tagged: design, go, project tabkeeper, </description>
+            <content:encoded><![CDATA[<p>It turns out the specific needs of my app were not suited to the more abstract concurrency guards I had built around my files.  Safe read and safe write methods are nice, but my only two interactions are really &ldquo;read all&rdquo; or &ldquo;add this item to whatever you already have&rdquo;.  So I overhauled the concurrency guards to just specifically handle those two operations and abandoned the file-level wrappers.</p>
+
+<p>With regards to security, my first pass of cut&amp;paste IP checking failed, because when I worked on it before I never ran from localhost.  It&rsquo;s not really a great solution anyway so I shelved it for now, but I need to figure out something before this is done.</p>
+
+<p>Also, I realized logging is a serious concern.  There are several places where things could go wrong with file read/writes, and as this program is meant to run in the background on my server hardware I need to setup a logfile for any potential errors.  Nothing too complicated, but another gear that needs to be fitted into the machine.  For now I&rsquo;m using the golang STD log package, works fine.</p>
+
+<p>Starting to tinker around with the HTML interface for the app, which means working with go&rsquo;s template package.  Another area where I&rsquo;ve heard there are some really nice fancy alternatives, but checking out new tools is the opposite of getting something done.</p>
+
+<p>I&rsquo;m going to have to start thinking about how to implement &ldquo;saved&rdquo; commands: if I want a group of monthly reoccurring changes to be available with a single button click, but also configurable through the app, that means another separate subsystem with its own UI and persistence needs.</p>
+]]></content:encoded>
     </item>
     <item>
             <title>TABKEEPER CONCURRENCY</title>
             <link>https://sore0159.github.io/1709022100_tabkeeper_concurrency.html</link>
+            <pubDate>Sep 2, 2017 (21:00)</pubDate>
             <description>TABKEEPER CONCURRENCY posted on Sep 2, 2017 (21:00).  Tagged: design, go, project tabkeeper, </description>
+            <content:encoded><![CDATA[<p>First design issue: concurrent file access control.</p>
+
+<p>Pass 1 was a wrapper struct around an *os.File that used a sync.RWMutex to control Read and Write calls.  This failed when I realized that after reading from the file, the next pageload would not start over at the beginning.  I looked at adjusting the ReadAt mark or using Seek to move the cursor, but this got complicated when considering that I did <em>not</em> want to adjust Write calls.</p>
+
+<p>Questions this raised:</p>
+
+<ul>
+<li>Is it a bad idea for a long-running server to hold an open file for an extended time?</li>
+<li>How does the system handle multiple simultaneous &ldquo;file&rdquo; objects on the same filesystem object?</li>
+</ul>
+
+<p>Pass 2 was a separate manager in charge of opening/closing file objects for every request, guarded again my a sync.RWMutex.  I miss rust&rsquo;s guard syntax for this kind of problem.  Pass 2A looked like:</p>
+
+<pre><code class="language-go">func (m *SafeManager) GetR() (*os.File, err) { 
+     m.Guard.RLock()
+     return os.Open(m.FileName)
+}
+func (m *SafeManager) DoneR(f *os.File) {
+     f.Close()
+     m.RUnlock()
+}
+
+func Example() {
+     f, err := m.GetR()
+     if err != nil { ... }
+     defer m.DoneR(f)
+     ...
+}
+</code></pre>
+
+<p>But I ended up with my current Pass 2B system, of having a wrapper around *os.File <em>and</em> a manager: calls to the manager wait on the mutex, then open and wrap a *os.File in a SafeFile, which wraps the Close() method to also unlock the appropriate guard in the manager.  This means when you use a SafeFile you don&rsquo;t need to worry about how it&rsquo;s safety is implemented beyond normal File closing.</p>
+
+<p>Not sure what to do if there is an error on the file close call: I just ignore these for now.</p>
+
+<p>So, the current system can safely read/write to a file based on web calls.  Next up, creating a data structure to represent tab entries, and implementing JSON parsing for read/writes.  I have some concern about processing needed once the list gets long, but at present I believe having a yearly file rotation will keep things fine.</p>
+]]></content:encoded>
     </item>
     <item>
             <title>PROJECT TABKEEPER</title>
             <link>https://sore0159.github.io/1709021950_project_tabkeeper.html</link>
+            <pubDate>Sep 2, 2017 (19:50)</pubDate>
             <description>PROJECT TABKEEPER posted on Sep 2, 2017 (19:50).  Tagged: design outline, go, project tabkeeper, </description>
+            <content:encoded><![CDATA[<p>Starting up a small project: <a href="https://github.com/sore0159/tabkeeper">tabkeeper</a>.  My wife and I have a constant running tab that we use to manage our house finances: when either of us pay for a &lsquo;house bill&rsquo;, we mark down what the other owes on the tab.  Right now we use a Google Doc spreadsheet to do this, but this is inconvenient in some small ways.  Hence, I am creating a small app for our home server to take the place of the spreadsheet.</p>
+
+<p>The main design goal of this app will be an improved user interface: streamlined data entry and automated data processing (date marking tab entries, adding up the tab).  After basic functionality is in place, I can add extended functionality like sorting/filtering and customizable recurring entries.</p>
+
+<p>As this will be a web page we use through our browsers, security is a concern.  I will attempt to limit access to only our home computers through both settings on the home server&rsquo;s reverse proxy (apache2) and in the design of the app itself.  Since we are not hosting any actual financial information and ease of use is a priority, users will not be involved in any authentication steps such as passwords.</p>
+
+<p>Another primary concern is data persistence.  For more advanced apps, a database is a natural choice and nothing about this app has any complications that would require more than a simple SQL table and a few SELECT/INSERT statements.  However, at least at this stage of the project, using a database seems like overkill.  I will be starting the project using a single file that the app will read/write it&rsquo;s data to.</p>
+
+<p>Using a single file for data persistence does present some challenges: safety from concurrent read/write access, and data parsing.  Since the data has fairly simple structure &ndash; a list of (time, description, amount) &ndash; I will be using go&rsquo;s easy to use JSON parsing libraries.  Storing the data in JSON keeps it readable by humans should something go wrong, and means I don&rsquo;t have to write a comma/space parser myself.</p>
+
+<p>Concurrency issues around file access I have less experience with: this is one of the big strengths of a database and a good reason to investigate small scale databases like SQLite or boltdb if the project expands beyond it&rsquo;s present small scale.  Right now I hope to get some useful experience out of experimenting with a mutex-lock system of file access control.</p>
+]]></content:encoded>
     </item>
     <item>
             <title>DEVBLOG RETROSPECTIVE</title>
             <link>https://sore0159.github.io/1708211850_devblog_retrospective.html</link>
+            <pubDate>Aug 21, 2017 (18:50)</pubDate>
             <description>DEVBLOG RETROSPECTIVE posted on Aug 21, 2017 (18:50).  Tagged: go, project devblog, retrospective, </description>
+            <content:encoded><![CDATA[<h3>A quick aside</h3>
+
+<p>Since this is the first post to <a href=".">Eric Sorell Writes Code</a>: if you want to know more about this site visit <a href="index.html">the main page</a>, or if you want to know about me in particular visit <a href="about.html">the page about me</a>.</p>
+
+<p>This post is a little more high-level than most project posts I anticipate due to the time between working on the project and actually blogging about that work.  Now that the blog exists, future projects can be documented while in-progress.</p>
+
+<p>I&rsquo;m also uncertain about the basic structure of these posts; if I want a conversational tone, a detailed examination or a high leveled overview, and other concerns.  Things need to be shaken out for a bit before they settle into a solid style.</p>
+
+<h3>What is the DevBlog project?</h3>
+
+<p>My <a href="https://github.com/sore0159/devblog">DevBlog</a> project was started because I wanted an actual product for my own use: a tool to manage a simple set of markdown files into an organized and formatted web site.  I like writing in vim on the console, and markdown has proven to have everything I want.</p>
+
+<p>Previously I have simply copy/pasted my journals into Google+ to put them online.  The goals with this project were to have journals be easier to navigate and to be formatted in a manner more suiting my personal aesthetic.</p>
+
+<p>Beyond product usability, further design goals of the project were:</p>
+
+<ul>
+<li>Don&rsquo;t take forever.</li>
+<li>Keep the code presentable and compilable by others.</li>
+</ul>
+
+<h3>How did the project go?</h3>
+
+<p>The first design was for a site that statically generated most page content, but dynamically created the navigation and page-design elements based on user input.  The idea here was to allow for users to filter or search for posts.  I went through a few different approaches to the overall structure of the project at this point, deciding how to divide parsing responsibilities.</p>
+
+<p>After a bit of a break from the project, I came back to it with the decision to create an entirely static site generator.  Conversations with friends about the cost/benefit ratio of semi-dynamic parsing made me reconsider my previous approach, and after investigating github&rsquo;s static site hosting I was convinced.</p>
+
+<p>This means the project ended up being significantly simpler than my initial estimation.  Mainly, I no longer needed to have my server manage an index that it would use to serve content.  The question of how to handle navigation was solved by a quick-and-dirty approach of including multiple navigation links on each post, one for every tag a post has.  This creates a bit of clutter, but can be fixed with javascript down the line if feedback indicates it is a problem.</p>
+
+<p>Several tweaks to the options and configuration of the program were made after attempted use.  Initially I had hoped for a single binary that could be used in any directory without need for outside resources, but recompilation on every change ended up being a hassle.  Additionally, there turned out to be no need for portability: in reality I am keeping all my blog posts and associated resources in one main directory anyway.</p>
+
+<h3>Concluding thoughts</h3>
+
+<p>I feel like the design considerations regarding index structuring and semi-dynamic routing were the most interesting aspects of this project, and with their abandonment I don&rsquo;t have much to talk about here.  I have made a program that just reads in some files, templates the contents, and then outputs formatted files.  It&rsquo;s pretty simple!</p>
+
+<p>This project finally convinced me to create a github based gopath in my local file system, so my code should <em>just run</em> when downloaded by someone else.  I don&rsquo;t expect anyone else to actually use this program, but I want this and all projects going forward to be portfolio pieces.  Having an examiner be able to compile and run my programs themself seems a valuable thing.</p>
+
+<p>I have not really commented my code, or attempted to structure the files/packages for display purposes.  Part of this is the simplicity and small scale of the project: everything pretty much just does what it says.  Similarly there are no tests, since there are no real invariants I have to maintain through future upgrades.</p>
+
+<p>From a product standpoint, I think my little dv command is much more suited to my tastes than any premade content platform I&rsquo;ve seen so far.  The site design needs work, and I expect to continue to expand functionality of the generator as I use it going forward.</p>
+]]></content:encoded>
     </item>
     
   </channel>
