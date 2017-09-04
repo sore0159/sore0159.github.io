@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+  <channel>
+    <title>Eric Sorell Writes Code (RSS Feed)</title>
+    <link>https://sore0159.github.io</link>
+    <description>A simple RSS Feed for my devblog</description>
+    <item>
+            <title>DEVBLOG CONTINUATION</title>
+            <link>https://sore0159.github.io/1709031642_devblog_continuation.html</link>
+            <description>DEVBLOG CONTINUATION posted on Sep 3, 2017 (16:42).  Tagged: design, go, project devblog, </description>
+    </item>
+    <item>
+            <title>TABKEEPER SECURITY</title>
+            <link>https://sore0159.github.io/1709030422_tabkeeper_security.html</link>
+            <description>TABKEEPER SECURITY posted on Sep 3, 2017 (04:22).  Tagged: design, go, project tabkeeper, </description>
+    </item>
+    <item>
+            <title>TABKEEPER CONCURRENCY</title>
+            <link>https://sore0159.github.io/1709022100_tabkeeper_concurrency.html</link>
+            <description>TABKEEPER CONCURRENCY posted on Sep 2, 2017 (21:00).  Tagged: design, go, project tabkeeper, </description>
+    </item>
+    <item>
+            <title>PROJECT TABKEEPER</title>
+            <link>https://sore0159.github.io/1709021950_project_tabkeeper.html</link>
+            <description>PROJECT TABKEEPER posted on Sep 2, 2017 (19:50).  Tagged: design outline, go, project tabkeeper, </description>
+    </item>
+    <item>
+            <title>DEVBLOG RETROSPECTIVE</title>
+            <link>https://sore0159.github.io/1708211850_devblog_retrospective.html</link>
+            <description>DEVBLOG RETROSPECTIVE posted on Aug 21, 2017 (18:50).  Tagged: go, project devblog, retrospective, </description>
+    </item>
+    
+  </channel>
+</rss>
