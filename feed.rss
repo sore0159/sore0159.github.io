@@ -5,6 +5,35 @@
     <link>https://sore0159.github.io</link>
     <description>A simple RSS Feed for my devblog</description>
     <item>
+            <title>star systems auth framework</title>
+            <link>https://sore0159.github.io/1709071928_star_systems_auth_framework.html</link>
+            <pubDate>Sep 7, 2017 (19:28)</pubDate>
+            <dc:creator><![CDATA[Eric Sorell]]></dc:creator>
+            <description>STAR SYSTEMS AUTH FRAMEWORK posted on Sep 7, 2017 (19:28).  Tagged: design, go, project star system, </description>
+            <content:encoded><![CDATA[<h3>What progress has been made?</h3>
+
+<p>&ldquo;Captain&rdquo; data structures have been added using the std&rsquo;s big.Int type for UID, with a mock DB structure and a basic secure-cookie authentication system.  The test server recognizes first and repeat visits.  JSON loading/saving of the mock db works.</p>
+
+<p>The test server has been structured to avoid the use of global variables as much as possible.  Sub-packages, like the current &lsquo;captains&rsquo; package, take as function parameters things like loggers, secure keys, and data files.</p>
+
+<p>The test server has a &lsquo;configurations&rsquo; data structure that at present simply uses a list of default values, but is made to be expandable into command line or rc-file configuration.</p>
+
+<h3>What interesting challenges have been encountered?</h3>
+
+<ol>
+<li><p>The shift away from storing the logger and the secure cookie encoder/decoder in global variables occurred because of the separation of design in the package system.  The captains package started out relying on an assumed shared structure with whatever server would be running it, but when building the Route Builder I had to consider how to handle logging.</p>
+
+<p>If the route builder should have access to the (then) global logger, then it should be a part of the server package itself.  I considered splitting off logging/routing from the test server, but decided to instead keep the captains package as separate as possible by having the route builder take a logger (interface) as a parameter.</p>
+
+<p>This done, transforming the logger from a global to a server-held variable seemed a natural next step, along with the rest of the program resources.</p></li>
+
+<li><p>Another interesting consideration was the UID type for the captains data structure.  Given the semi-disposable planned nature for user identity, I decided that an unbounded ID count was worth the extra work in using the big.Int type instead of a simple uint64.  The intention is to store this in a postgres bigserial type.</p></li>
+
+<li><p>Finally, the encryption/security of the authentication system is being handled by the <a href="http://www.gorillatoolkit.org/pkg/securecookie">gorilla/securecookie</a> package.  I know not to &lsquo;roll my own crypto&rsquo;, though I&rsquo;m not sure how much I want to integrate toolkits like gorilla into my program.  For now I&rsquo;m using it as simply as possible, for only the actual encrypting of the UID values.</p></li>
+</ol>
+]]></content:encoded>
+    </item>
+    <item>
             <title>project star system</title>
             <link>https://sore0159.github.io/1709061718_project_star_system.html</link>
             <pubDate>Sep 6, 2017 (17:18)</pubDate>

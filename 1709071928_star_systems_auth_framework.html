@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Eric Sorell Writes Code: (STAR SYSTEMS AUTH FRAMEWORK)</title>
+<link rel="stylesheet" href="/css/basic.css">
+<link rel="shortcut icon" href="/img/yd32.ico">
+</head>
+<body>
+<div id="titlebar">
+<a id="titlelink" href="/">Eric Sorell Writes Code</a>
+</div>
+<div id="topright">
+        <a class="toplink" href="/index.html">HOME</a>
+        <a class="toplink" href="/about.html">ABOUT ME</a> 
+        <a class="toplink" href="/archives.html">ARCHIVES</a>
+ </div>
+<div id=bodyholder>
+
+
+<h1><a class=posttitle href="1709071928_star_systems_auth_framework.html">STAR SYSTEMS AUTH FRAMEWORK</a></h1> 
+
+<div id="postheader">
+<p class="date">Published Sep 7, 2017 (19:28)</p>
+<p class="mytags">Tagged: <a class="taglink" href="/archives_design.html">design</a> <a class="taglink" href="/archives_go.html">go</a> <a class="taglink" href="/archives_project_star_system.html">project star system</a> </p>
+
+<div class="topnav">
+<b>Go to:</b> 
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709061718_project_star_system.html" title="PROJECT STAR SYSTEM (Sep 6, 2017 (17:18))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+</div>
+<h3>What progress has been made?</h3>
+
+<p>&ldquo;Captain&rdquo; data structures have been added using the std&rsquo;s big.Int type for UID, with a mock DB structure and a basic secure-cookie authentication system.  The test server recognizes first and repeat visits.  JSON loading/saving of the mock db works.</p>
+
+<p>The test server has been structured to avoid the use of global variables as much as possible.  Sub-packages, like the current &lsquo;captains&rsquo; package, take as function parameters things like loggers, secure keys, and data files.</p>
+
+<p>The test server has a &lsquo;configurations&rsquo; data structure that at present simply uses a list of default values, but is made to be expandable into command line or rc-file configuration.</p>
+
+<h3>What interesting challenges have been encountered?</h3>
+
+<ol>
+<li><p>The shift away from storing the logger and the secure cookie encoder/decoder in global variables occurred because of the separation of design in the package system.  The captains package started out relying on an assumed shared structure with whatever server would be running it, but when building the Route Builder I had to consider how to handle logging.</p>
+
+<p>If the route builder should have access to the (then) global logger, then it should be a part of the server package itself.  I considered splitting off logging/routing from the test server, but decided to instead keep the captains package as separate as possible by having the route builder take a logger (interface) as a parameter.</p>
+
+<p>This done, transforming the logger from a global to a server-held variable seemed a natural next step, along with the rest of the program resources.</p></li>
+
+<li><p>Another interesting consideration was the UID type for the captains data structure.  Given the semi-disposable planned nature for user identity, I decided that an unbounded ID count was worth the extra work in using the big.Int type instead of a simple uint64.  The intention is to store this in a postgres bigserial type.</p></li>
+
+<li><p>Finally, the encryption/security of the authentication system is being handled by the <a href="http://www.gorillatoolkit.org/pkg/securecookie">gorilla/securecookie</a> package.  I know not to &lsquo;roll my own crypto&rsquo;, though I&rsquo;m not sure how much I want to integrate toolkits like gorilla into my program.  For now I&rsquo;m using it as simply as possible, for only the actual encrypting of the UID values.</p></li>
+</ol>
+
+
+<hr class=navbar />
+<div id="navbar">
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709061718_project_star_system.html" title="PROJECT STAR SYSTEM (Sep 6, 2017 (17:18))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div id="morenav">&#8650;</div>
+<div id="morenav2">&#8650;</div>
+
+<div class="navbar">
+
+
+<a class="navbar" href="1709022100_tabkeeper_concurrency.html" title="TABKEEPER CONCURRENCY (Sep 2, 2017 (21:00))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709040514_tabkeeper_operational.html" title="TABKEEPER OPERATIONAL (Sep 4, 2017 (05:14))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_design.html">Posts tagged "design"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709061718_project_star_system.html" title="PROJECT STAR SYSTEM (Sep 6, 2017 (17:18))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_go.html">Posts tagged "go"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1709061718_project_star_system.html" title="PROJECT STAR SYSTEM (Sep 6, 2017 (17:18))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709061718_project_star_system.html" title="PROJECT STAR SYSTEM (Sep 6, 2017 (17:18))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_project_star_system.html">Posts tagged "project star system"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+</div>
+
+</div>
+</body>
+</html>
