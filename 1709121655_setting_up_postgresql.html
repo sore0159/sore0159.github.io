@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Eric Sorell Writes Code: (SETTING UP POSTGRESQL)</title>
+<link rel="stylesheet" href="/css/basic.css">
+<link rel="shortcut icon" href="/img/yd32.ico">
+</head>
+<body>
+<div id="titlebar">
+<a id="titlelink" href="/">Eric Sorell Writes Code</a>
+</div>
+<div id="topright">
+        <a class="toplink" href="/index.html">HOME</a>
+        <a class="toplink" href="/about.html">ABOUT ME</a> 
+        <a class="toplink" href="/archives.html">ARCHIVES</a>
+ </div>
+<div id=bodyholder>
+
+
+<h1><a class=posttitle href="1709121655_setting_up_postgresql.html">SETTING UP POSTGRESQL</a></h1> 
+
+<div id="postheader">
+<p class="date">Published Sep 12, 2017 (16:55)</p>
+<p class="mytags">Tagged: <a class="taglink" href="/archives_postgresql.html">postgresql</a> <a class="taglink" href="/archives_sysadmin.html">sysadmin</a> </p>
+
+<div class="topnav">
+<b>Go to:</b> 
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709071928_star_systems_auth_framework.html" title="STAR SYSTEMS AUTH FRAMEWORK (Sep 7, 2017 (19:28))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+</div>
+<p>I haven&rsquo;t used PostgreSQL in a while.  I had instances running on my home server and my development laptop, primarily for my <a href="https://github.com/sore0159/overpower">overpower</a> project.  Since then I&rsquo;ve been working on more single-user projects with smaller persistence requirements, and haven&rsquo;t felt the need to delve into setting up tables and program-db communications.</p>
+
+<p>My latest project requires a db, so I have spent some time digging through my old config files, actual paper files, and documentation pages.  After a night of this I do have a new and functional setup for postgresql on both my laptop and server.</p>
+
+<h3>Upgrading Postgres (9.4 -&gt; 9.6)</h3>
+
+<p>On debian, apt-get managed the upgrade quite simply, but with all passwords, roles, and tables half-lost over the past year, I decided a full database clear was a good idea.  Rather than manually purge files, the pg_dropcluster command followed by the pg_createcluster served this purpose.</p>
+
+<p>On macOS, brew install postgresql seemed to work, but after some exploration I noticed the psql command would report a self-version of 9.6, but a <em>server</em> version of 9.4.  Investigation revealed that the previous install of Postgres had been done via the &lsquo;Enterprise Installer&rsquo;.  I had to completely uninstall postgresql 9.4 via the uninstall binary in the 9.4 directory, then reinstall 9.6 via homebrew.</p>
+
+<h3>Role &amp; Authentication Configuration</h3>
+
+<p>Initially Postgres is setup to authenticate based on the system-user name of the attempted login, rather than using passwords.  For this, using <code>sudo -u</code> to mock the Postgres system name is useful.  I discovered that homebrew&rsquo;s postgresql superuser was <em>not</em> postgres, but instead the username of the account that ran the install.</p>
+
+<p>Using psql, I used the CREATE USER command to set up a non-superuser with role and db creation privileges, and with an encrypted password.  Then the task was to switch postgresql to password based authentication and never use the superuser account again.</p>
+
+<p>For this, I had to find the pg_hba.conf file.  In debian it was in the expected /etc/postgres/9.6/ directory, but on macOS I wasn&rsquo;t exactly sure where homebrew kept it&rsquo;s files.  Using the command <code>ps aux | grep postgres</code> I was able to investigate the -D flag the server was using, which gave the data directory ( /usr/local/var/postgres ).</p>
+
+<p>Setting authentication to md5 and restarting the postgresql servers, I was then able to log via <code>psql -U</code>, and start setting up the actual roles and databases for my programs to use.</p>
+
+<h3>Misc. Notes</h3>
+
+<p>The psql tool was invaluable in investigating and testing the state of Postgres.  One thing I learned quickly was that when I wanted to log in to psql, I needed to specify a database.  During setup I hadn&rsquo;t even created a database, but &lsquo;template1&rsquo; served as a system-generated database that I could use.</p>
+
+<p>The details of setting up roles and databases are not included here, as I found <a href="https://www.postgresql.org/docs/9.6/static">Postgres&rsquo;s Docs</a> to adequately cover the commands and options involved.</p>
+
+
+<hr class=navbar />
+<div id="navbar">
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709071928_star_systems_auth_framework.html" title="STAR SYSTEMS AUTH FRAMEWORK (Sep 7, 2017 (19:28))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div id="morenav">&#8650;</div>
+<div id="morenav2">&#8650;</div>
+
+<div class="navbar">
+
+
+<span class="inv">&lt;&lt;First</span>
+
+&bull;
+
+<span class="inv">&lt;Previous</span>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_postgresql.html">Posts tagged "postgresql"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div class="navbar">
+
+
+<span class="inv">&lt;&lt;First</span>
+
+&bull;
+
+<span class="inv">&lt;Previous</span>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_sysadmin.html">Posts tagged "sysadmin"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+</div>
+
+</div>
+</body>
+</html>

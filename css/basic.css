@@ -144,6 +144,11 @@ pre {
         color: #000;
         background-color: #F0FfF0;
 }
+code {
+        font-family: "Courier New", Courier, Monospace;
+        font-weight: bold;
+        color: #080;
+}
 
 p.date {
         text-decoration: underline;
