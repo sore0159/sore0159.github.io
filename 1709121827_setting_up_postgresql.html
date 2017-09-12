@@ -18,10 +18,10 @@
 <div id=bodyholder>
 
 
-<h1><a class=posttitle href="1709121655_setting_up_postgresql.html">SETTING UP POSTGRESQL</a></h1> 
+<h1><a class=posttitle href="1709121827_setting_up_postgresql.html">SETTING UP POSTGRESQL</a></h1> 
 
 <div id="postheader">
-<p class="date">Published Sep 12, 2017 (16:55)</p>
+<p class="date">Published Sep 12, 2017 (18:27)</p>
 <p class="mytags">Tagged: <a class="taglink" href="/archives_postgresql.html">postgresql</a> <a class="taglink" href="/archives_sysadmin.html">sysadmin</a> </p>
 
 <div class="topnav">
@@ -63,13 +63,13 @@
 
 <h3>Role &amp; Authentication Configuration</h3>
 
-<p>Initially Postgres is setup to authenticate based on the system-user name of the attempted login, rather than using passwords.  For this, using <code>sudo -u</code> to mock the Postgres system name is useful.  I discovered that homebrew&rsquo;s postgresql superuser was <em>not</em> postgres, but instead the username of the account that ran the install.</p>
+<p>Initially Postgres is setup to authenticate based on the system-user name of the attempted login, rather than using passwords.  To do this on debian I had to use <code>sudo -u</code> to mock the Postgres system name, but on macOS the <code>psql -U</code> flag worked fine.  I discovered that homebrew&rsquo;s postgresql superuser was <em>not</em> postgres, but instead the username of the account that ran the install.</p>
 
 <p>Using psql, I used the CREATE USER command to set up a non-superuser with role and db creation privileges, and with an encrypted password.  Then the task was to switch postgresql to password based authentication and never use the superuser account again.</p>
 
 <p>For this, I had to find the pg_hba.conf file.  In debian it was in the expected /etc/postgres/9.6/ directory, but on macOS I wasn&rsquo;t exactly sure where homebrew kept it&rsquo;s files.  Using the command <code>ps aux | grep postgres</code> I was able to investigate the -D flag the server was using, which gave the data directory ( /usr/local/var/postgres ).</p>
 
-<p>Setting authentication to md5 and restarting the postgresql servers, I was then able to log via <code>psql -U</code>, and start setting up the actual roles and databases for my programs to use.</p>
+<p>Setting authentication to md5 and restarting the postgresql servers, I was then able to log via <code>psql -U</code>, and start setting up the actual roles and databases for my programs to use.  Restarting on macOS was <code>pg_ctl reload -D</code> &hellip; (see previous paragraph for how to find the data directory).  Restarting on debian was <code>/etc/init.d/postgresql restart</code></p>
 
 <h3>Misc. Notes</h3>
 
