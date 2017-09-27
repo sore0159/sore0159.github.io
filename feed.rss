@@ -5,11 +5,42 @@
     <link>https://sore0159.github.io</link>
     <description>A simple RSS Feed for my devblog</description>
     <item>
+            <title>star system table management</title>
+            <link>https://sore0159.github.io/1709261911_star_system_table_management.html</link>
+            <pubDate>Sep 26, 2017 (19:11)</pubDate>
+            <dc:creator><![CDATA[Eric Sorell]]></dc:creator>
+            <description>STAR SYSTEM TABLE MANAGEMENT posted on Sep 26, 2017 (19:11).  Tagged: design, go, project star system, sql, </description>
+            <content:encoded><![CDATA[<h3>What progress has been made?</h3>
+
+<p>I have built a &lsquo;manage&rsquo; tool to aid in the creation and adjustment of postgres tables and data.  I&rsquo;ve started a basic Star data creation routine and tested loading/reading from the database.</p>
+
+<h3>What interesting challenges have been encountered?</h3>
+
+<ul>
+<li><p>Getting postgres operational and synchronized between development and &lsquo;production&rsquo; environments was a challenge, though not really part of this codebase.</p></li>
+
+<li><p>Creating a separate binary for management of tables and star data came about after considering separation of concerns; there&rsquo;s no reason these tasks need to be part of any data serving/authentication.</p></li>
+
+<li><p>When creating the management program I had to consider the appropriate level of abstraction: in the past I have gone a bit overboard in trying to abstract away database code, creating interfaces for managing databases for semi-arbitrary go data structures.  My old <a href="https://github.com/sore0159/golang-helpers">database utility package</a> was a fundamental part of my previous large web app design, but this time I felt a more concrete design would be better.</p></li>
+
+<li><p>I almost wrote another, smaller query generator, but decided to go with manual table schema for the time being.  I intend to use manual queries for table usage, as well.</p></li>
+
+<li><p>I looked at <a href="https://github.com/jackc/pgx">pgx</a> for database driver use, but decided on the more basic standard library postgres sql driver.  I am, however, trying to create a slight wrapper around the db to hopefully make future changes at this level less painful (though I am not optimistic).</p></li>
+
+<li><p>Location coordinates have switched from uint64 to int64 to better use postgresql&rsquo;s bigint data type.  I&rsquo;m uncertain about the captain UID data type: bigserial is the most straightforward choice on the db level, but this is essentially just an int64, and server side I have already built around the theoretically unbounded BigInt.  I will try a &lsquo;numeric&rsquo; database data type for the UID, with concerns about efficiency.</p></li>
+
+<li><p>I had to consider how to go about getting the star data from generating program into the database.  The intended scale of this data is such that holding it in memory is not an option, so I am currently generating data in small chunks and then writing them to a file, which upon completion is fed to Postgres&rsquo; <code>COPY FROM</code> command.  I&rsquo;m trusting postgresql to know how to safely read data from a huge file: this has not yet been tested at scale.</p>
+
+<p><code>COPY FROM</code> has some problems already: primarily requiring a superuser database role to allow postgresql to read from the filesystem.  Combined with difficulty in verifying uniqueness in chunk-generated data, it I might investigate how slow <code>INSERT</code> statements actually are when I start generating data sets large enough.</p></li>
+</ul>
+]]></content:encoded>
+    </item>
+    <item>
             <title>setting up postgresql</title>
             <link>https://sore0159.github.io/1709121827_setting_up_postgresql.html</link>
             <pubDate>Sep 12, 2017 (18:27)</pubDate>
             <dc:creator><![CDATA[Eric Sorell]]></dc:creator>
-            <description>SETTING UP POSTGRESQL posted on Sep 12, 2017 (18:27).  Tagged: postgresql, sysadmin, </description>
+            <description>SETTING UP POSTGRESQL posted on Sep 12, 2017 (18:27).  Tagged: sql, sysadmin, </description>
             <content:encoded><![CDATA[<p>I haven&rsquo;t used PostgreSQL in a while.  I had instances running on my home server and my development laptop, primarily for my <a href="https://github.com/sore0159/overpower">overpower</a> project.  Since then I&rsquo;ve been working on more single-user projects with smaller persistence requirements, and haven&rsquo;t felt the need to delve into setting up tables and program-db communications.</p>
 
 <p>My latest project requires a db, so I have spent some time digging through my old config files, actual paper files, and documentation pages.  After a night of this I do have a new and functional setup for postgresql on both my laptop and server.</p>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Eric Sorell Writes Code: (STAR SYSTEM TABLE MANAGEMENT)</title>
+<link rel="stylesheet" href="/css/basic.css">
+<link rel="shortcut icon" href="/img/yd32.ico">
+</head>
+<body>
+<div id="titlebar">
+<a id="titlelink" href="/">Eric Sorell Writes Code</a>
+</div>
+<div id="topright">
+        <a class="toplink" href="/index.html">HOME</a>
+        <a class="toplink" href="/about.html">ABOUT ME</a> 
+        <a class="toplink" href="/archives.html">ARCHIVES</a>
+ </div>
+<div id=bodyholder>
+
+
+<h1><a class=posttitle href="1709261911_star_system_table_management.html">STAR SYSTEM TABLE MANAGEMENT</a></h1> 
+
+<div id="postheader">
+<p class="date">Published Sep 26, 2017 (19:11)</p>
+<p class="mytags">Tagged: <a class="taglink" href="/archives_design.html">design</a> <a class="taglink" href="/archives_go.html">go</a> <a class="taglink" href="/archives_project_star_system.html">project star system</a> <a class="taglink" href="/archives_sql.html">sql</a> </p>
+
+<div class="topnav">
+<b>Go to:</b> 
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709121827_setting_up_postgresql.html" title="SETTING UP POSTGRESQL (Sep 12, 2017 (18:27))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+</div>
+<h3>What progress has been made?</h3>
+
+<p>I have built a &lsquo;manage&rsquo; tool to aid in the creation and adjustment of postgres tables and data.  I&rsquo;ve started a basic Star data creation routine and tested loading/reading from the database.</p>
+
+<h3>What interesting challenges have been encountered?</h3>
+
+<ul>
+<li><p>Getting postgres operational and synchronized between development and &lsquo;production&rsquo; environments was a challenge, though not really part of this codebase.</p></li>
+
+<li><p>Creating a separate binary for management of tables and star data came about after considering separation of concerns; there&rsquo;s no reason these tasks need to be part of any data serving/authentication.</p></li>
+
+<li><p>When creating the management program I had to consider the appropriate level of abstraction: in the past I have gone a bit overboard in trying to abstract away database code, creating interfaces for managing databases for semi-arbitrary go data structures.  My old <a href="https://github.com/sore0159/golang-helpers">database utility package</a> was a fundamental part of my previous large web app design, but this time I felt a more concrete design would be better.</p></li>
+
+<li><p>I almost wrote another, smaller query generator, but decided to go with manual table schema for the time being.  I intend to use manual queries for table usage, as well.</p></li>
+
+<li><p>I looked at <a href="https://github.com/jackc/pgx">pgx</a> for database driver use, but decided on the more basic standard library postgres sql driver.  I am, however, trying to create a slight wrapper around the db to hopefully make future changes at this level less painful (though I am not optimistic).</p></li>
+
+<li><p>Location coordinates have switched from uint64 to int64 to better use postgresql&rsquo;s bigint data type.  I&rsquo;m uncertain about the captain UID data type: bigserial is the most straightforward choice on the db level, but this is essentially just an int64, and server side I have already built around the theoretically unbounded BigInt.  I will try a &lsquo;numeric&rsquo; database data type for the UID, with concerns about efficiency.</p></li>
+
+<li><p>I had to consider how to go about getting the star data from generating program into the database.  The intended scale of this data is such that holding it in memory is not an option, so I am currently generating data in small chunks and then writing them to a file, which upon completion is fed to Postgres&rsquo; <code>COPY FROM</code> command.  I&rsquo;m trusting postgresql to know how to safely read data from a huge file: this has not yet been tested at scale.</p>
+
+<p><code>COPY FROM</code> has some problems already: primarily requiring a superuser database role to allow postgresql to read from the filesystem.  Combined with difficulty in verifying uniqueness in chunk-generated data, it I might investigate how slow <code>INSERT</code> statements actually are when I start generating data sets large enough.</p></li>
+</ul>
+
+
+<hr class=navbar />
+<div id="navbar">
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709121827_setting_up_postgresql.html" title="SETTING UP POSTGRESQL (Sep 12, 2017 (18:27))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives.html">All posts</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div id="morenav">&#8650;</div>
+<div id="morenav2">&#8650;</div>
+
+<div class="navbar">
+
+
+<a class="navbar" href="1709022100_tabkeeper_concurrency.html" title="TABKEEPER CONCURRENCY (Sep 2, 2017 (21:00))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709071928_star_systems_auth_framework.html" title="STAR SYSTEMS AUTH FRAMEWORK (Sep 7, 2017 (19:28))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_design.html">Posts tagged "design"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1708211850_devblog_retrospective.html" title="DEVBLOG RETROSPECTIVE (Aug 21, 2017 (18:50))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709071928_star_systems_auth_framework.html" title="STAR SYSTEMS AUTH FRAMEWORK (Sep 7, 2017 (19:28))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_go.html">Posts tagged "go"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1709061718_project_star_system.html" title="PROJECT STAR SYSTEM (Sep 6, 2017 (17:18))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709071928_star_systems_auth_framework.html" title="STAR SYSTEMS AUTH FRAMEWORK (Sep 7, 2017 (19:28))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_project_star_system.html">Posts tagged "project star system"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+<div class="navbar">
+
+
+<a class="navbar" href="1709121827_setting_up_postgresql.html" title="SETTING UP POSTGRESQL (Sep 12, 2017 (18:27))">&lt;&lt;First</a>
+
+&bull;
+
+<a class="navbar" href="1709121827_setting_up_postgresql.html" title="SETTING UP POSTGRESQL (Sep 12, 2017 (18:27))">&lt;Previous</a>
+
+<div class="archnav">
+        &bull;
+
+<a class="navbar" href="archives_sql.html">Posts tagged "sql"</a>
+
+        &bull;
+</div>
+
+<span class="inv">Next&gt;</span>
+
+&bull;
+
+<span class="inv">Latest&gt;&gt;</span>
+
+
+</div>
+
+
+</div>
+
+</div>
+</body>
+</html>
