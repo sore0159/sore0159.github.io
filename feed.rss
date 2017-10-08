@@ -5,6 +5,35 @@
     <link>https://sore0159.github.io</link>
     <description>A simple RSS Feed for my devblog</description>
     <item>
+            <title>small pg management tool</title>
+            <link>https://sore0159.github.io/1710080549_small_pg_management_tool.html</link>
+            <pubDate>Oct 8, 2017 (05:49)</pubDate>
+            <dc:creator><![CDATA[Eric Sorell]]></dc:creator>
+            <description>SMALL PG MANAGEMENT TOOL posted on Oct 8, 2017 (05:49).  Tagged: go, sql, </description>
+            <content:encoded><![CDATA[<p>I made a small <a href="https://github.com/sore0159/mn_pg">postgresql table management tool</a> to help my rapid iteration of table schema in my projects.</p>
+
+<p>This project started life as a small part of my <a href="./archives_project_star_system.html">star system project</a>, but I decided to splinter off database management in that project into it&rsquo;s own tiny application.  Now I am considering using postgresql for other small projects and have realized this simple tool could be made more general.</p>
+
+<h3>Why does this project exist?</h3>
+
+<p>This tool allows me to save database connection information in a json file, and have multiple files with different information for different projects.  It allows me to have my schema information in project specific SQL files that I don&rsquo;t have to weave into any project code.</p>
+
+<p>During my development process I often find myself creating a table definition, trying it out, and then changing that definition based on that trial.  It happens so frequently that I think a tool that can very quickly do exactly that will be broadly useful to me.</p>
+
+<h3>What interesting challenges or considerations were encountered?</h3>
+
+<p>Interacting with the database is extremely simple, so the most interesting design decisions grew around how and when to get information from the user.  I had to decide how to store database connection information, table schema, selective table processing, and default behavior.</p>
+
+<p>Options tried out were compiling defaults into the binary, parsing command line arguments in various ways, and parsing json files.  In the end I decided to keep nothing in the binary itself, and make a run-time-parsed, command-line specified json file mandatory for operation.</p>
+
+<p>I initially considered having the json file be a set name, but decided that forcing it to be command line specified allowed me to switch between projects completely at run time.  The configuration file is structured so that I should be able to have each project have its own default behavior that will require no (or minimal) other run-time options to be given.</p>
+
+<p>This is a project of sensible defaults.  I want the tool to do the right thing with a minimum of input, and figuring out exactly what that means will be an iterative process as I continue to use it.</p>
+
+<p>Second, the splitting of the project into a minimal binary and a separate &lsquo;library&rsquo; package with all the main functionality, inspired by how I&rsquo;ve seen Rust projects organized, was an interesting exercise in separation of concerns.</p>
+]]></content:encoded>
+    </item>
+    <item>
             <title>star system table management</title>
             <link>https://sore0159.github.io/1709261911_star_system_table_management.html</link>
             <pubDate>Sep 26, 2017 (19:11)</pubDate>
